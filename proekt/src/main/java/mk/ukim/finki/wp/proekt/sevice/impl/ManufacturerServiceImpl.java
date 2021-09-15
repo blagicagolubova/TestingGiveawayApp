@@ -1,9 +1,12 @@
 package mk.ukim.finki.wp.proekt.sevice.impl;
 
 import mk.ukim.finki.wp.proekt.model.Manufacturer;
+import mk.ukim.finki.wp.proekt.model.exceptions.InvalidManufacturerIdException;
 import mk.ukim.finki.wp.proekt.repository.ManufacturerRepository;
 import mk.ukim.finki.wp.proekt.sevice.ManufacturerService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ManufacturerServiceImpl implements ManufacturerService {
@@ -26,8 +29,12 @@ public class ManufacturerServiceImpl implements ManufacturerService {
             return this.manufacturerRepository.findById(id).get();
         }
         else{
-            //TODO: exception
-            return null;
+            throw new InvalidManufacturerIdException();
         }
+    }
+
+    @Override
+    public List<Manufacturer> findAll() {
+        return this.manufacturerRepository.findAll();
     }
 }

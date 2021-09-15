@@ -1,0 +1,54 @@
+<head>
+    <title>My Awards</title>
+</head>
+<div xmlns:th="http://www.thymeleaf.org">
+<!-- Navigation -->
+<br/> <br/><br/>
+<div>
+    <th:block sec:authorize="hasRole('ROLE_USER')">
+        <div class="container">
+            <a href="/awards/add-award" name="addAward" class="btn btn-primary">Add new Award</a>
+            <p th:if="${awards.size()<1}">
+                You don't have awards.
+            </p>
+        </div>
+    </th:block>
+<br/>
+    <div class="container" th:if="${awards.size()>0}">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Award</th>
+                    <th scope="col">Weight</th>
+                    <th scope="col">Manufacturer</th>
+                    <th:block sec:authorize="hasRole('ROLE_USER')">
+                        <th scope="col"></th>
+                    </th:block>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="award : ${awards}">
+                    <td th:text="${award.getName()}"></td>
+                    <td th:text="${award.getWeight()}"></td>
+                    <td th:text="${award.getManufacturer() != null} ? ${award.getManufacturer().getName()} : 'No Manufacturer'"></td>
+                    <th:block sec:authorize="hasRole('ROLE_USER')">
+                        <td>
+                            <a class="btn btn-info btn-block" th:if="${award.getStatus()==status}" th:href="@{'/awards/edit-form/{id}' (id=${award.getId()})}">Edit</a>
+                        </td>
+                    </th:block>
+                    <td>
+                        <form th:if="${award.getStatus()==status}" th:method="post" th:action="@{'awards/delete/{id}' (id=${award.getId()})}">
+                            <button type="submit" class="btn btn-danger btn-block">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>

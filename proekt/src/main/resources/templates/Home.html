@@ -1,10 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>HOME | Giveaway</title>
+    <title>Home | Giveaway</title>
 </head>
-<body>
-BlaBla
-</body>
-</html>
+<div xmlns:th="http://www.thymeleaf.org">
+
+    <div class="container1"  id="section1" th:style="'background: url(https://nerdoutapp.com/wp-content/uploads/2018/03/Giveaways.jpg); background-repeat: no-repeat, repeat; background-size: cover;'">
+        <div class="elements" style="background: white; opacity: 0.8; border-radius: 25px;">
+            <a href="#section2" style="color: #299f44;">TOP 3 GIVEAWAYS</a>
+            <h2 style="font-family: 'Book Antiqua'; color: black">Giveaway app</h2>
+            <p style="font-family: 'Book Antiqua'; color: black">Christmas spirit throughout whole year...<br>
+            Make someone happy, make a giveaway!<br>
+            Participate for countless giveaways! </p>
+            <br>
+            <div>
+                <form th:action="@{'/giveaway/add-giveaway'}" style="display: contents;">
+                    <button type="submit"
+                            id="make"
+                            name="make"
+                            class="button">Make a giveaway
+                    </button>
+                </form>
+
+                <form th:action="@{'/giveaway'}" style="display: contents;">
+                    <button type="submit"
+                            id="participate"
+                            name="participate"
+                            class="button">Participate in a giveaway
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container justify-content-center">
+        <br>
+        <h2 class="text-center justify-content-center" >Most popular Giveaways</h2>
+        <br>
+    </div>
+    <!--
+    <div class="d-flex justify-content-center" id="section2">
+    <div class="container" style="margin-right: 14%">
+        <div class="row">
+            <span th:each="giveaway : ${giveawayList}">
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" th:src="${giveaway.getAward().getUrl()}" alt="Card image cap" style="height: 220px;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${giveaway.getName()}"></h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:text="| Start Date: ${#dates.format(giveaway.getStartDate(), 'dd-MM-yyyy')}|">Start Date:</li>
+                        <li class="list-group-item" th:text="| End Date: ${#dates.format(giveaway.getEndDate(), 'dd-MM-yyyy')}|">End Date:</li>
+                    </ul>
+                    <div class="card-body" style="display: inline-flex;">
+                        <a th:href="@{'/giveaway/details/{id}' (id=${giveaway.getId()})}"
+                           class="btn btn-sm btn-info edit-product">
+                            <i class="fa fa-trash">Details</i>
+                        </a>
+
+                        <th:block sec:authorize="hasRole('ROLE_USER')">
+                            <form th:action="@{'/giveaway/add-participant/{id}' (id=${giveaway.getId()})}" th:method="POST">
+                                <button type="submit" class="btn btn-sm btn-primary cart-product" style="margin-left: 9%;">
+                                    <i class="fa fa-trash">Participate</i>
+                                </button>
+                            </form>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </span>
+    </div>
+    </div>
+    </div>-->
+</div>

@@ -1,0 +1,88 @@
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Giveaway List</title>
+</head>
+<style>
+    .link {
+        background-color: #7c777c;
+        color: white;
+        padding: 9px 17px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        border-radius: 4px;
+    }
+</style>
+<div xmlns:th="http://www.thymeleaf.org">
+<!-- Navigation -->
+
+<div class="container">
+    <br><br><br>
+    <form>
+        <div class="form-group">
+            <div class="row">
+                <select id="categorySearch" name="categorySearch" class="form-control col-md-4">
+                    <option class="dropdown-item" value="all">All</option>
+                    <option class="dropdown-item" th:each="category:${categoryList}" th:value="${category.getName()}" th:text="${category.getName()}"></option>
+                </select>
+                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                    <select id="statusSearch" name="statusSearch" class="form-control col-md-4">
+                        <option class="dropdown-item" value="all">All</option>
+                        <option class="dropdown-item" th:each="stat:${status}" th:value="${stat}" th:text="${stat}"></option>
+                    </select>
+                </th:block>
+                <button id="filter" type="submit" class="btn btn-success btn-block col-md-3" style="margin-left:1%;">Filter</button>
+                <br/>
+                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                <a  class="link" th:href="@{'/giveaway/export/pdf'}" style="margin-left: 0.5%;"><i class="fa fa-download"></i>PDF</a>
+                </th:block>
+
+            </div>
+        </div>
+    </form>
+</div>
+<br/>
+<div class="container">
+    <th:block sec:authorize="hasRole('ROLE_USER')">
+        <a href="/giveaway/add-giveaway" class="btn btn-primary" name="addGiveaway">Add new Giveaway</a>
+        <p th:if="${giveawayList.size()<1}">
+            You don't have giveaways to participate to.
+        </p>
+    </th:block>
+</div>
+<br/>
+<div class="container mb-4 threeGrid">
+        <span th:if="${giveawayList.size() > 0}"  >
+
+            <span th:each="giveaway : ${giveawayList}" class="col-md-4" style="float: left; margin-bottom: 2%">
+
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" th:src="${giveaway.getAward().getUrl()}" alt="Card image cap" style="height: 220px;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${giveaway.getName()}"></h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:text="| Start Date: ${#dates.format(giveaway.getStartDate(), 'dd-MM-yyyy')}|"></li>
+                        <li class="list-group-item" th:text="| End Date: ${#dates.format(giveaway.getEndDate(), 'dd-MM-yyyy')}|"></li>
+                    </ul>
+                    <div class="card-body" style="display: inline-flex;">
+                        <a th:href="@{'/giveaway/details/{id}' (id=${giveaway.getId()})}"
+                           class="btn btn-sm btn-info edit-product details">
+                                        <i>Details</i>
+                        </a>
+
+                        <th:block sec:authorize="hasRole('ROLE_USER')">
+                            <form th:action="@{'/giveaway/add-participant/{id}' (id=${giveaway.getId()})}" th:method="POST">
+                                <button type="submit" class="btn btn-sm btn-primary cart-product participate" style="margin-left: 9%;">
+                                    <i>Participate</i>
+                                </button>
+                            </form>
+                        </th:block>
+                    </div>
+                </div>
+            </span>
+        </span>
+</div>
+</div>

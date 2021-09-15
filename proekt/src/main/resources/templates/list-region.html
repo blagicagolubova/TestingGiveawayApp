@@ -1,0 +1,38 @@
+<head>
+    <title>Regions</title>
+</head>
+<div xmlns:th="http://www.thymeleaf.org">
+<br/><br/><br/>
+<div>
+    <div class="container">
+        <a href="/region/add-region" class="btn btn-primary">Add new Region</a>
+
+        <p th:if="${regions.size()<1}">
+            You don't have regions.
+        </p>
+    </div>
+<br/>
+    <div class="container" th:if="${regions.size()>0}">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Region Name</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="region : ${regions}">
+                    <td th:text="${region.getName()}"></td>
+                    <td class="text-right">
+
+                        <a class="btn btn-info" th:href="@{'/region/details/{id}' (id=${region.getId()})}"><i class="fa fa-trash">Edit</i></a>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>

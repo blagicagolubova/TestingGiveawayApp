@@ -2,6 +2,9 @@ package mk.ukim.finki.wp.proekt.sevice.impl;
 
 import mk.ukim.finki.wp.proekt.model.Country;
 import mk.ukim.finki.wp.proekt.model.Region;
+import mk.ukim.finki.wp.proekt.model.exceptions.EmptyRegionNameException;
+import mk.ukim.finki.wp.proekt.model.exceptions.InvalidRegionArgumentsException;
+import mk.ukim.finki.wp.proekt.model.exceptions.InvalidRegionIdException;
 import mk.ukim.finki.wp.proekt.repository.RegionRepository;
 import mk.ukim.finki.wp.proekt.sevice.CountryService;
 import mk.ukim.finki.wp.proekt.sevice.RegionService;
@@ -23,15 +26,20 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     public Region save(String name, List<Integer> country_ids) {
-        if (!name.isEmpty() && country_ids.size()>=1){
+        if (!name.isEmpty() && country_ids.size()>=1 && this.regionRepository.findByName(name)==null){
             List<Country> countries = this.countryService.findAllById(country_ids);
             Region region= new  Region(name, countries);
             return this.regionRepository.save(region);
-
+        }
+        else if(!name.isEmpty() && country_ids.size()>=1 && this.regionRepository.findByName(name)!=null){
+            Region region = this.regionRepository.findByName(name);
+            List<Country> countries = this.countryService.findAllById(country_ids);
+            region.setCountries(countries);
+            region.setName(name);
+            return this.regionRepository.save(region);
         }
         else{
-            //TODO: exception
-            return null;
+            throw new InvalidRegionArgumentsException();
         }
     }
 
@@ -41,8 +49,7 @@ public class RegionServiceImpl implements RegionService {
             return this.regionRepository.findByName(name);
         }
         else{
-            //TODO: exception
-            return null;
+            throw new EmptyRegionNameException();
         }
     }
 
@@ -52,8 +59,7 @@ public class RegionServiceImpl implements RegionService {
             return this.regionRepository.findById(id).get();
         }
         else{
-            //TODO: exception
-            return null;
+            throw new InvalidRegionIdException();
         }
     }
 

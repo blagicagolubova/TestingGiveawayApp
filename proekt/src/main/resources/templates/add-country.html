@@ -1,0 +1,32 @@
+<head>
+    <title>Add Country</title>
+</head>
+<body>
+<br><br><br>
+<div xmlns:th="http://www.thymeleaf.org">
+    <div class="container">
+        <form class="form-signin mt-xl-5" method="post" action="/country/add" >
+            <h2 class="form-signin-heading">Add Country</h2>
+            <p>
+                <label for="name" class="sr-only">Name</label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="Country Name" required="" autofocus="">
+            </p>
+            <p>
+                <label for="code" class="sr-only">Name</label>
+                <input type="text" id="code" name="code" class="form-control" placeholder="Code Name" required="" autofocus="">
+            </p>
+            <div class="form-group">
+                <label>Continent</label>
+                <select name="continent" class="form-control" >
+                    <option
+                            th:each="continent : ${continentList}"
+                            th:value="${continent}"
+                            th:text="${continent}">
+                    </option>
+                </select>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Add Country</button>
+        </form>
+
+    </div>
+</div>
